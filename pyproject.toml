@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nova-meta-prompter"
-version = "0.1.0"
+version = "0.1.1"
 description = "Transform prompts to align with Amazon Nova guidelines"
 authors = [{name = "Arlind Nocaj", email = "arlind.nocaj@gmail.com"}]
 readme = "README.md"
@@ -31,6 +31,12 @@ packages = ["nova_meta_prompter"]
 nova_meta_prompter = ["../data/**/*.txt"]
 
 [tool.poe.tasks]
-build = "python -m build"
+bump-version = "python bump_version.py"
 publish-test = "twine upload --repository testpypi dist/*"
 publish = "twine upload dist/*"
+
+[tool.poe.tasks.build]
+sequence = ["bump-version", "_do-build"]
+
+[tool.poe.tasks._do-build]
+cmd = "python -m build"
