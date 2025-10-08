@@ -93,6 +93,7 @@ def bedrock_converse(bedrock_client, system_input, message, tool_list, model_id,
     except bedrock_client.exceptions.ThrottlingException as e:
         wait_sec = 60
         print(f'LLM got throttled, waiting {str(wait_sec)} seconds.')
+        # nosemgrep: arbitrary-sleep
         time.sleep(wait_sec)
         # Recursive retry
         return bedrock_converse(bedrock_client, system_input, message, tool_list, model_id, inference_config)
