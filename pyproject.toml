@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nova-meta-prompter"
-version = "0.1.1"
+version = "0.1.3"
 description = "Transform prompts to align with Amazon Nova guidelines"
 authors = [{name = "Arlind Nocaj", email = "arlind.nocaj@gmail.com"}]
 readme = "README.md"
