@@ -19,6 +19,9 @@ dev = [
     "pytest>=7.0.0",
     "pytest-mock>=3.10.0",
     "jupyter>=1.1.1",
+    "build>=1.0.0",
+    "twine>=4.0.0",
+    "poethepoet>=0.24.0",
 ]
 
 [tool.setuptools]
@@ -26,3 +29,8 @@ packages = ["nova_meta_prompter"]
 
 [tool.setuptools.package-data]
 nova_meta_prompter = ["../data/**/*.txt"]
+
+[tool.poe.tasks]
+build = "python -m build"
+publish-test = "twine upload --repository testpypi dist/*"
+publish = "twine upload dist/*"
