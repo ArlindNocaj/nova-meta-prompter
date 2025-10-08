@@ -1,64 +1,76 @@
-# Amazon Nova Meta Prompter
+# nova-meta-prompter
 
 Transform prompts to align with Amazon Nova guidelines.
-
-## Quick Start
-
-### Interactive Notebook (Recommended)
-
-Open `nova_metaprompter_showcase.ipynb` to transform prompts:
-
-```bash
-# Set your AWS credentials
-export AWS_PROFILE=your-profile-name
-export AWS_REGION=us-west-2
-
-# Launch Jupyter
-jupyter notebook nova_metaprompter_showcase.ipynb
-```
-
-The notebook provides:
-- **Prompt Transformation**: Align prompts with Nova guidelines
-- **Analysis & Reflection**: Detailed transformation process with reasoning
-- **Multiple Models**: Support for Nova Premier and Claude Sonnet 4.5
-
-### Python API
-
-Use the transform function directly in your code:
-
-```python
-from transform import transform_prompt
-
-# Transform using default Nova Premier model
-current_prompt = "Summarize this document: {document_text}"
-result = transform_prompt(current_prompt)
-
-print("Nova-aligned prompt:")
-print(result['nova_final'])
-
-# Or use Claude Sonnet 4.5
-result = transform_prompt(
-    current_prompt,
-    model_id='global.anthropic.claude-sonnet-4-5-20250929-v1:0'
-)
-```
 
 ## Installation
 
 ```bash
-# Clone repository
+pip install nova-meta-prompter
+```
+
+Or install from source:
+
+```bash
 git clone <repository-url>
 cd nova_metaprompter
-
-# Install dependencies
 pip install -e .
 ```
 
-## Configuration
+## Quick Start
 
-### AWS Credentials
+```python
+from nova_meta_prompter import transform_prompt
 
-Configure via environment variables (recommended):
+# Transform a prompt
+result = transform_prompt("Summarize this document: {document_text}")
+
+# Get the Nova-aligned prompt
+print(result['nova_final'])
+
+# View the transformation process
+print(result['thinking'])      # Analysis of changes
+print(result['nova_draft'])    # Initial draft
+print(result['reflection'])    # Reflection on draft
+```
+
+## Advanced Usage
+
+### Custom Model
+
+```python
+# Use Claude Sonnet instead of default Nova Premier
+result = transform_prompt(
+    "Your prompt here",
+    model_id='global.anthropic.claude-sonnet-4-5-20250929-v1:0'
+)
+```
+
+### Custom Boto Client
+
+```python
+import boto3
+from botocore.config import Config
+
+# Create custom client
+config = Config(region_name='us-east-1', read_timeout=2000)
+client = boto3.client('bedrock-runtime', config=config)
+
+# Use with transform_prompt
+result = transform_prompt("Your prompt", boto_client=client)
+```
+
+## Interactive Notebook
+
+Explore the package with the included Jupyter notebook:
+
+```bash
+export AWS_PROFILE=your-profile
+jupyter notebook nova_metaprompter_showcase.ipynb
+```
+
+## AWS Configuration
+
+Set your AWS credentials:
 
 ```bash
 export AWS_PROFILE=your-profile-name
@@ -71,55 +83,29 @@ Or use AWS CLI:
 aws configure
 ```
 
-**Note**: The SDK automatically detects region from your AWS configuration. No hard-coded regions required.
+## Requirements
 
-## Available Models
-
-- **`us.amazon.nova-premier-v1:0`** (default) - Amazon Nova Premier
-- **`global.anthropic.claude-sonnet-4-5-20250929-v1:0`** - Claude Sonnet 4.5
-
-## Project Structure
-
-```
-nova_metaprompter/
-├── transform.py                          # Main transformation function
-├── nova_metaprompter_showcase.ipynb      # Interactive notebook
-├── data/                                 # Prompt templates and docs
-│   ├── prompts/
-│   └── docs/
-├── pyproject.toml
-└── README.md
-```
+- Python 3.8+
+- AWS Bedrock access with Nova model permissions
+- Valid AWS credentials
 
 ## What It Does
 
+The transformer:
 - Analyzes your existing prompts
 - Identifies alignment opportunities with Nova guidelines
-- Adapts prompts for Nova models' capabilities
-- Provides detailed reasoning and reflection
+- Applies Nova best practices (clear headers, structured format, step-by-step instructions)
+- Provides detailed reasoning and reflection on changes
 
-## Nova Guidelines Applied
+## Development
 
-- **Clear section headers** using ## format
-- **Specific task descriptions** and context
-- **Step-by-step instructions** when beneficial
-- **Structured output requirements**
-- **Optimized formatting** for Nova models' reasoning capabilities
+Run tests:
 
-## Amazon Nova Premier Advantages
+```bash
+pip install -e ".[dev]"
+pytest
+```
 
-- **Extended Context**: 1M token context window
-- **Cost Effective**: Lower cost per token
-- **Structured Output**: Native JSON/XML formatting support
-- **Multimodal**: Built-in image/video understanding
-- **AWS Native**: Seamless integration with AWS services
+## License
 
-## Requirements
-
-- Python 3.12+
-- AWS Bedrock access with Nova model permissions
-- Valid AWS credentials configured
-
----
-
-**Get started with the notebook for an interactive experience transforming your prompts.**
+MIT
