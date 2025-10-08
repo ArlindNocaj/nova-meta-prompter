@@ -19,3 +19,4 @@ uv.lock
 # Aider files and directories
 .aider*
 .idea/
+.claude/
