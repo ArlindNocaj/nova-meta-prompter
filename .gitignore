@@ -1,0 +1,21 @@
+.DS_Store
+.eslintcache
+.npmrc
+build
+dist/
+node_modules
+minified
+env/
+*.egg-info/
+.coverage
+.tox
+.venv
+/htmlcov
+__pycache__/
+
+# UV lock file
+uv.lock
+
+# Aider files and directories
+.aider*
+.idea/
